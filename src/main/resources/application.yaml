@@ -1,0 +1,25 @@
+server:
+  port: 50001
+  shutdown: graceful
+
+spring:
+  application:
+    name: gateway
+  cloud:
+    gateway:
+      routes:
+        - id: planverse-dev
+          uri: lb://planverse-dev
+          predicates:
+            - Path=/planverse-dev/**
+        - id: planverse-main
+          uri: lb://planverse
+          predicates:
+            - Path=/planverse/**
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://${spring.security.user.name}:${spring.security.user.password}@localhost:8761/eureka
