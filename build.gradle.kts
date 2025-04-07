@@ -72,9 +72,6 @@ jib {
         jvmFlags = listOf(
             "-Dspring.security.user.name=" + System.getenv("EUREKA_USER_NAME"),
             "-Dspring.security.user.password=" + System.getenv("EUREKA_USER_PWD"),
-            "-Dspring.jwt.secret=" + System.getenv("JWT_ENC_PWD"),
-
-            "-Djasypt.encryptor.password=\${ENC_PWD}",
         )
     }
 }
