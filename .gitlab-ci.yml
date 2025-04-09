@@ -2,6 +2,16 @@ variables:
   JIB_IMAGE: $CI_REGISTRY_IMAGE:$CI_COMMIT_BRANCH-$CI_COMMIT_SHORT_SHA
   EUREKA_USER_NAME: $EUREKA_USER_NAME
   EUREKA_USER_PWD: $EUREKA_USER_PWD
+  JWT_SECRET: $JWT_SECRET
+
+workflow:
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+      variables:
+        ENC_PWD: $ENC_PWD_DEV
+    - if: $CI_COMMIT_BRANCH == "dev"
+      variables:
+        ENC_PWD: $ENC_PWD_MAIN
 
 default:
   interruptible: true
@@ -36,12 +46,10 @@ deploy:
     - docker login $CI_REGISTRY -u $TOKEN_USER --password $TOKEN_PWD
   script:
     - docker pull $DOCKER_LATEST_IMAGE_NAME
-    - docker stop $CI_PROJECT_NAME;echo $?
-    - docker rm -f $CI_PROJECT_NAME;echo $?
-    - docker run -d --name $CI_PROJECT_NAME $DOCKER_LATEST_IMAGE_NAME
+    - docker stop $CI_PROJECT_NAME || true && docker rm -f $CI_PROJECT_NAME || true
+    - docker run -d -p 50001:50001 -e ENC_PWD=$ENC_PWD --name $CI_PROJECT_NAME $DOCKER_LATEST_IMAGE_NAME
     - docker system prune -f
   after_script:
     - docker logout
   tags:
     - shared-mac
-  interruptible: true
