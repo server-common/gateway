@@ -1,21 +1,15 @@
 server:
-  port: 50001
+  port: 8762
   shutdown: graceful
 
 spring:
   application:
     name: gateway
+  config:
+    import: optional:configserver:https://config.seoeungi.work
   cloud:
-    gateway:
-      routes:
-        - id: planverse-dev
-          uri: lb://planverse-dev
-          predicates:
-            - Path=/planverse-dev/**
-        - id: planverse-main
-          uri: lb://planverse
-          predicates:
-            - Path=/planverse/**
+    config:
+      fail-fast: true
 
 eureka:
   client:
