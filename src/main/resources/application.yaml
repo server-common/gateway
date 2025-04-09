@@ -1,29 +1,8 @@
-server:
-  port: 8762
-  shutdown: graceful
-
 spring:
   application:
     name: gateway
   config:
-    import: optional:configserver:https://config.seoeungi.work
+    import: optional:configserver:https://cloud.seoeungi.work
   cloud:
     config:
       fail-fast: true
-
-eureka:
-  client:
-    register-with-eureka: true
-    fetch-registry: true
-    service-url:
-      defaultZone: https://${spring.security.user.name}:${spring.security.user.password}@eureka.seoeungi.work/eureka
-  instance:
-    lease-renewal-interval-in-seconds: 10
-    lease-expiration-duration-in-seconds: 30
-    prefer-ip-address: true
-
-management:
-  endpoints:
-    web:
-      exposure:
-        include: health
