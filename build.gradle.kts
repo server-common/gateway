@@ -25,17 +25,29 @@ repositories {
     mavenCentral()
 }
 
+val jwtVersion = "0.12.6"
+
 dependencies {
     implementation("org.jetbrains.kotlin:kotlin-reflect")
+
     implementation("org.springframework.cloud:spring-cloud-starter-gateway")
     implementation("org.springframework.cloud:spring-cloud-starter-netflix-eureka-client")
     implementation("org.springframework.cloud:spring-cloud-starter-config:4.2.0")
     implementation("org.springframework.boot:spring-boot-starter-actuator")
-    implementation("org.projectlombok:lombok")
+    implementation("org.springframework.boot:spring-boot-starter-security")
+
+    implementation("io.jsonwebtoken:jjwt-api:$jwtVersion")
+
     compileOnly("org.projectlombok:lombok")
+
+    runtimeOnly("io.jsonwebtoken:jjwt-impl:$jwtVersion")
+    runtimeOnly("io.jsonwebtoken:jjwt-jackson:$jwtVersion")
+
     annotationProcessor("org.projectlombok:lombok")
+
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
+
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
